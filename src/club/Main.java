@@ -115,8 +115,21 @@ public class Main {
                         } catch (Exception e) {}
                         System.out.println("Índice inválido. Intente de nuevo.");
                     }
-                    c.pagarFactura(cedula, idx);
-                    System.out.println("Factura pagada (si existía y tenía fondos).");
+                    // Obtener el monto de la factura y los fondos disponibles
+                    double monto = c.getFactura(cedula, idx); // Debe retornar el monto de la factura o -1 si no existe
+                    double fondos = c.getFondos(cedula); // Debe retornar los fondos actuales del socio
+                    if (monto < 0) {
+                        System.out.println("La factura no existe.");
+                    } else {
+                        System.out.println("Monto a pagar: $" + monto);
+                        System.out.println("Fondos disponibles: $" + fondos);
+                        if (fondos >= monto) {
+                            c.pagarFactura(cedula, idx);
+                            System.out.println("Factura pagada correctamente.");
+                        } else {
+                            System.out.println("Fondos insuficientes para pagar la factura.");
+                        }
+                    }
                 } break;
                 case 4: {
                     String cedula;

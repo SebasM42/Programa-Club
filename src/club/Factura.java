@@ -22,4 +22,7 @@ public class Factura {
     public double darValor() {
         return valor;
     }
+    public double getMonto() {
+        return valor;
+    }
 }

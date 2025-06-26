@@ -48,4 +48,19 @@ public class Club {
             socio.aumentarFondos(valor);
         }
     }
+    public double getFactura(String cedula, int idx) {
+        Socio socio = socios.get(cedula);
+        if (socio != null) {
+            return socio.getMontoFactura(idx);
+        }
+        return -1;
+    }
+
+    public double getFondos(String cedula) {
+        Socio socio = socios.get(cedula);
+        if (socio != null) {
+            return socio.getFondos();
+        }
+        return -1;
+    }
 }

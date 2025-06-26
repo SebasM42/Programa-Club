@@ -49,14 +49,22 @@ public class Socio {
             }
         }
     }
+    public double getFondos() {
+        return fondos;
+    }
 
     public void aumentarFondos(double valor) {
         if (valor > 0) {
             fondos += valor;
         }
     }
-
-    // Clase interna para Factura
+    public double getMontoFactura(int idx) {
+        if (idx >= 0 && idx < facturas.size()) {
+            Factura f = facturas.get(idx);
+            return f.pagada ? 0 : f.valor;
+        }
+        return -1; // Indica que la factura no existe
+    }
     private static class Factura {
         String concepto;
         double valor;
@@ -68,4 +76,5 @@ public class Socio {
             this.pagada = false;
         }
     }
+
 }
