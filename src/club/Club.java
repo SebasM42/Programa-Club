@@ -1,61 +1,51 @@
 package club;
 
+import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class Club {
-    private ArrayList<Socio> socios;
-
-    public Club() {
-
-        socios = new ArrayList<>();
-    }
+    private Map<String, Socio> socios = new HashMap<>();
 
     public boolean afiliarSocio(String cedula, String nombre, Socio.Tipo tipo) {
-        if (buscarSocio(cedula) == null) {
-            socios.add(new Socio(cedula, nombre, tipo));
-            return true;
+        if (socios.containsKey(cedula)) {
+            return false;
         }
-        return false;
+        socios.put(cedula, new Socio(cedula, nombre, tipo));
+        return true;
     }
 
-    public boolean agregarAutorizado(String cedula, String nombreAutorizado) {
-        Socio s = buscarSocio(cedula);
-        if (s != null) {
-            return s.agregarAutorizado(nombreAutorizado);
-        }
-        return false;
+    public boolean cedulaDisponible(String cedula) {
+        return !socios.containsKey(cedula);
     }
 
-    public boolean pagarFactura(String cedula, int indiceFactura) {
-        Socio s = buscarSocio(cedula);
-        if (s != null) {
-            return s.pagarFactura(indiceFactura);
+    public void agregarAutorizado(String cedula, String nombreAut) {
+        Socio socio = socios.get(cedula);
+        if (socio != null) {
+            socio.agregarAutorizado(nombreAut);
         }
-        return false;
     }
 
-    public boolean registrarConsumo(String cedula, String nombre, String concepto, double valor) {
-        Socio s = buscarSocio(cedula);
-        if (s != null) {
-            return s.registrarConsumo(nombre, concepto, valor);
+    public void pagarFactura(String cedula, int idx) {
+        Socio socio = socios.get(cedula);
+        if (socio != null) {
+            socio.pagarFactura(idx);
         }
-        return false;
     }
 
-    public boolean aumentarFondos(String cedula, double valor) {
-        Socio s = buscarSocio(cedula);
-        if (s != null) {
-            return s.aumentarFondos(valor);
+    public void registrarConsumo(String cedula, String nombre, String concepto, double valor) {
+        Socio socio = socios.get(cedula);
+        if (socio != null && (socio.getNombre().equals(nombre) || socio.estaAutorizado(nombre))) {
+            socio.registrarConsumo(concepto, valor);
+            System.out.println("Factura generada. Concepto: " + concepto);
         }
-        return false;
     }
 
-    private Socio buscarSocio(String cedula) {
-        for (Socio s : socios) {
-            if (s.darCedula().equals(cedula)) {
-                return s;
-            }
+    public void aumentarFondos(String cedula, double valor) {
+        Socio socio = socios.get(cedula);
+        if (socio != null) {
+            socio.aumentarFondos(valor);
         }
-        return null;
     }
 }

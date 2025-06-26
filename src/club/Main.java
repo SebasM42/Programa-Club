@@ -26,17 +26,42 @@ public class Main {
 
             switch (op) {
                 case 1: {
-                    System.out.print("Ingrese cédula: ");
-                    String cedula = sc.next();
-                    System.out.print("Ingrese nombre: ");
-                    String nombre = sc.next();
+                    String cedula;
+                    while (true) {
+                        while (true) {
+                            System.out.print("Ingrese cédula: ");
+                            try {
+                                cedula = sc.next();
+                                Long.parseLong(cedula);
+                                break;
+                            } catch (Exception e) {
+                                System.out.println("La cédula solo debe contener números. Intente de nuevo.");
+                            }
+                        }
+                        if (!c.cedulaDisponible(cedula)) {
+                            System.out.println("El socio ya se encuentra registrado. Ingrese otra cédula.");
+                        } else {
+                            break;
+                        }
+                    }
+                    String nombre;
+                    while (true) {
+                        System.out.print("Ingrese nombre: ");
+                        try {
+                            nombre = sc.next();
+                            if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) throw new Exception();
+                            break;
+                        } catch (Exception e) {
+                            System.out.println("El nombre no debe contener números ni caracteres especiales. Intente de nuevo.");
+                        }
+                    }
                     int tipo = 1;
                     while (true) {
                         System.out.print("Tipo (1: REGULAR, 2: VIP): ");
                         try {
                             tipo = Integer.parseInt(sc.next());
                             if (tipo == 1 || tipo == 2) break;
-                        } catch (NumberFormatException e) {}
+                        } catch (Exception e) {}
                         System.out.println("Tipo inválido. Intente de nuevo.");
                     }
                     Tipo t = (tipo == 2) ? Tipo.VIP : Tipo.REGULAR;
@@ -44,33 +69,78 @@ public class Main {
                     System.out.println(exito ? "Socio afiliado correctamente." : "No se pudo afiliar el socio.");
                 } break;
                 case 2: {
-                    System.out.print("Ingrese cédula del socio: ");
-                    String cedula = sc.next();
-                    System.out.print("Ingrese nombre del autorizado: ");
-                    String nombreAut = sc.next();
+                    String cedula;
+                    while (true) {
+                        System.out.print("Ingrese cédula del socio: ");
+                        try {
+                            cedula = sc.next();
+                            Long.parseLong(cedula);
+                            break;
+                        } catch (Exception e) {
+                            System.out.println("La cédula solo debe contener números. Intente de nuevo.");
+                        }
+                    }
+                    String nombreAut;
+                    while (true) {
+                        System.out.print("Ingrese nombre del autorizado: ");
+                        try {
+                            nombreAut = sc.next();
+                            if (!nombreAut.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) throw new Exception();
+                            break;
+                        } catch (Exception e) {
+                            System.out.println("El nombre no debe contener números ni caracteres especiales. Intente de nuevo.");
+                        }
+                    }
                     c.agregarAutorizado(cedula, nombreAut);
                     System.out.println("Autorizado registrado.");
                 } break;
                 case 3: {
-                    System.out.print("Ingrese cédula del socio: ");
-                    String cedula = sc.next();
+                    String cedula;
+                    while (true) {
+                        System.out.print("Ingrese cédula del socio: ");
+                        try {
+                            cedula = sc.next();
+                            Long.parseLong(cedula);
+                            break;
+                        } catch (Exception e) {
+                            System.out.println("La cédula solo debe contener números. Intente de nuevo.");
+                        }
+                    }
                     int idx = -1;
                     while (true) {
                         System.out.print("Ingrese índice de la factura a pagar: ");
                         try {
                             idx = Integer.parseInt(sc.next());
                             if (idx >= 0) break;
-                        } catch (NumberFormatException e) {}
+                        } catch (Exception e) {}
                         System.out.println("Índice inválido. Intente de nuevo.");
                     }
                     c.pagarFactura(cedula, idx);
                     System.out.println("Factura pagada (si existía y tenía fondos).");
                 } break;
                 case 4: {
-                    System.out.print("Ingrese cédula del socio: ");
-                    String cedula = sc.next();
-                    System.out.print("Ingrese nombre (socio o autorizado): ");
-                    String nombre = sc.next();
+                    String cedula;
+                    while (true) {
+                        System.out.print("Ingrese cédula del socio: ");
+                        try {
+                            cedula = sc.next();
+                            Long.parseLong(cedula);
+                            break;
+                        } catch (Exception e) {
+                            System.out.println("La cédula solo debe contener números. Intente de nuevo.");
+                        }
+                    }
+                    String nombre;
+                    while (true) {
+                        System.out.print("Ingrese nombre (socio o autorizado): ");
+                        try {
+                            nombre = sc.next();
+                            if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) throw new Exception();
+                            break;
+                        } catch (Exception e) {
+                            System.out.println("El nombre no debe contener números ni caracteres especiales. Intente de nuevo.");
+                        }
+                    }
                     System.out.print("Ingrese concepto: ");
                     String concepto = sc.next();
                     double valor = 0;
@@ -79,23 +149,32 @@ public class Main {
                         try {
                             valor = Double.parseDouble(sc.next());
                             if (valor > 0) break;
-                        } catch (NumberFormatException e) {}
-                        System.out.println("Valor inválido. Intente de nuevo.");
+                        } catch (Exception e) {}
+                        System.out.println("Valor inválido. Debe ser un número positivo. Intente de nuevo.");
                     }
                     c.registrarConsumo(cedula, nombre, concepto, valor);
                     System.out.println("Consumo registrado.");
                 } break;
                 case 5: {
-                    System.out.print("Ingrese cédula del socio: ");
-                    String cedula = sc.next();
+                    String cedula;
+                    while (true) {
+                        System.out.print("Ingrese cédula del socio: ");
+                        try {
+                            cedula = sc.next();
+                            Long.parseLong(cedula);
+                            break;
+                        } catch (Exception e) {
+                            System.out.println("La cédula solo debe contener números. Intente de nuevo.");
+                        }
+                    }
                     double valor = 0;
                     while (true) {
                         System.out.print("Ingrese valor a aumentar: ");
                         try {
                             valor = Double.parseDouble(sc.next());
                             if (valor > 0) break;
-                        } catch (NumberFormatException e) {}
-                        System.out.println("Valor inválido. Intente de nuevo.");
+                        } catch (Exception e) {}
+                        System.out.println("Valor inválido. Debe ser un número positivo. Intente de nuevo.");
                     }
                     c.aumentarFondos(cedula, valor);
                     System.out.println("Fondos aumentados.");

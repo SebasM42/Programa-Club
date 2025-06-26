@@ -1,84 +1,71 @@
 package club;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Socio {
-    public enum Tipo { VIP, REGULAR }
+    public enum Tipo { REGULAR, VIP }
 
     private String cedula;
     private String nombre;
-    private double fondos;
     private Tipo tipo;
-    private ArrayList<Factura> facturas;
-    private ArrayList<String> autorizados;
-
-
-    // Límites y fondos iniciales según el tipo de socio
-    private static final double FONDO_INICIAL_REGULAR = 50;
-    private static final double FONDO_INICIAL_VIP = 100;
-    private static final double FONDO_MAX_REGULAR = 1000;
-    private static final double FONDO_MAX_VIP = 5000;
+    private double fondos;
+    private List<String> autorizados;
+    private List<Factura> facturas;
 
     public Socio(String cedula, String nombre, Tipo tipo) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.tipo = tipo;
-        this.fondos = (tipo == Tipo.VIP) ? FONDO_INICIAL_VIP : FONDO_INICIAL_REGULAR;
-        this.facturas = new ArrayList<>();
+        this.fondos = 0;
         this.autorizados = new ArrayList<>();
+        this.facturas = new ArrayList<>();
     }
 
-    public String darCedula() { return cedula; }
-    public String darNombre() { return nombre; }
-    public double darFondos() { return fondos; }
-    public Tipo darTipo() { return tipo; }
-    public ArrayList<Factura> darFacturas() { return facturas; }
-    public ArrayList<String> darAutorizados() { return autorizados; }
+    public String getNombre() {
+        return nombre;
+    }
 
-    public boolean agregarAutorizado(String nombre) {
-        if (fondos > 0 && !autorizados.contains(nombre)) {
-            autorizados.add(nombre);
-            return true;
+    public void agregarAutorizado(String nombreAut) {
+        if (!autorizados.contains(nombreAut)) {
+            autorizados.add(nombreAut);
         }
-        return false;
     }
 
-    public boolean eliminarAutorizado(String nombre) {
-        // Solo se puede eliminar si no tiene facturas pendientes
-        for (Factura f : facturas) {
-            if (f.darNombre().equals(nombre)) {
-                return false;
+    public boolean estaAutorizado(String nombreAut) {
+        return autorizados.contains(nombreAut);
+    }
+
+    public void registrarConsumo(String concepto, double valor) {
+        facturas.add(new Factura(concepto, valor));
+    }
+
+    public void pagarFactura(int idx) {
+        if (idx >= 0 && idx < facturas.size()) {
+            Factura f = facturas.get(idx);
+            if (!f.pagada && fondos >= f.valor) {
+                fondos -= f.valor;
+                f.pagada = true;
             }
         }
-        return autorizados.remove(nombre);
     }
 
-    public boolean registrarConsumo(String nombreCliente, String concepto, double valor) {
-        if (fondos >= valor && (nombreCliente.equals(this.nombre) || autorizados.contains(nombreCliente))) {
-            facturas.add(new Factura(nombreCliente, concepto, valor));
-            return true;
-        }
-        return false;
-    }
-
-    public boolean pagarFactura(int indice) {
-        if (indice >= 0 && indice < facturas.size()) {
-            Factura f = facturas.get(indice);
-            if (fondos >= f.darValor()) {
-                fondos -= f.darValor();
-                facturas.remove(indice);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean aumentarFondos(double valor) {
-        double max = (tipo == Tipo.VIP) ? FONDO_MAX_VIP : FONDO_MAX_REGULAR;
-        if (valor > 0 && (fondos + valor) <= max) {
+    public void aumentarFondos(double valor) {
+        if (valor > 0) {
             fondos += valor;
-            return true;
         }
-        return false;
+    }
+
+    // Clase interna para Factura
+    private static class Factura {
+        String concepto;
+        double valor;
+        boolean pagada;
+
+        Factura(String concepto, double valor) {
+            this.concepto = concepto;
+            this.valor = valor;
+            this.pagada = false;
+        }
     }
 }
