@@ -12,6 +12,7 @@ public class Socio {
     private ArrayList<Factura> facturas;
     private ArrayList<String> autorizados;
 
+
     // Límites y fondos iniciales según el tipo de socio
     private static final double FONDO_INICIAL_REGULAR = 50;
     private static final double FONDO_INICIAL_VIP = 100;
