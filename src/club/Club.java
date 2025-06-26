@@ -6,6 +6,7 @@ public class Club {
     private ArrayList<Socio> socios;
 
     public Club() {
+
         socios = new ArrayList<>();
     }
 
