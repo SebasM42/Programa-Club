@@ -1,9 +1,9 @@
 package club;
 
 public class Factura {
-    private String nombre;      // Nombre del socio o autorizado que hizo el consumo
-    private String concepto;    // Concepto del consumo
-    private double valor;       // Valor del consumo
+    private String nombre;
+    private String concepto;
+    private double valor;
 
     public Factura(String nombre, String concepto, double valor) {
         this.nombre = nombre;

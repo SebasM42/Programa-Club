@@ -15,7 +15,8 @@ public class Main {
             System.out.println("3. Pagar una factura.");
             System.out.println("4. Registrar un consumo en la cuenta de un socio");
             System.out.println("5. Aumentar fondos de la cuenta de un socio");
-            System.out.println("6. Salir");
+            System.out.println("6. Eliminar un socio por cédula");
+            System.out.println("7. salir");
             System.out.print("Ingrese una opcion: ");
             try {
                 op = Integer.parseInt(sc.next());
@@ -66,7 +67,11 @@ public class Main {
                     }
                     Tipo t = (tipo == 2) ? Tipo.VIP : Tipo.REGULAR;
                     boolean exito = c.afiliarSocio(cedula, nombre, t);
-                    System.out.println(exito ? "Socio afiliado correctamente." : "No se pudo afiliar el socio.");
+                    if (t == Tipo.VIP && !exito) {
+                        System.out.println("Ya existen 3 socios VIP. No se pueden registrar más.");
+                    } else {
+                        System.out.println(exito ? "Socio afiliado correctamente." : "No se pudo afiliar el socio.");
+                    }
                 } break;
                 case 2: {
                     String cedula;
@@ -180,12 +185,27 @@ public class Main {
                     System.out.println("Fondos aumentados.");
                 } break;
                 case 6: {
+                    String cedula;
+                    while (true) {
+                        System.out.print("Ingrese cédula del socio a eliminar: ");
+                        try {
+                            cedula = sc.next();
+                            Long.parseLong(cedula);
+                            break;
+                        } catch (Exception e) {
+                            System.out.println("La cédula solo debe contener números. Intente de nuevo.");
+                        }
+                    }
+                    boolean eliminado = c.eliminarSocio(cedula);
+                    System.out.println(eliminado ? "Socio eliminado correctamente." : "No se encontró un socio con esa cédula.");
+                } break;
+                case 7: {
                     System.out.println("Gracias!");
                 } break;
                 default:
                     System.out.println("Opción inválida");
             }
-        } while (op != 6);
+        } while (op != 7);
 
         sc.close();
     }

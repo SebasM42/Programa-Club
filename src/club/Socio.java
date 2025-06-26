@@ -26,6 +26,10 @@ public class Socio {
         return nombre;
     }
 
+    public Tipo getTipo() {
+        return tipo;
+    }
+
     public void agregarAutorizado(String nombreAut) {
         if (!autorizados.contains(nombreAut)) {
             autorizados.add(nombreAut);
